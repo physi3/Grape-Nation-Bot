@@ -1,7 +1,7 @@
 # Grape nation Bot
 
 This is the repository for my Grape Nation discord bot.
-Add it to a server [here](http://semver.org/).
+Add it to a server [here](https://discordapp.com/api/oauth2/authorize?client_id=534783961591971840&permissions=8&scope=bot).
 
 
 # Commands
