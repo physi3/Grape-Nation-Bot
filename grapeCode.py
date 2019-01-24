@@ -32,11 +32,13 @@ def updateUsers():
 
 myUsers = myUsers()
 pickle_in = open("dict.pickle","rb")
-#myUsers.myUsersList = pickle.load(pickle_in)
-myUsers.myUsersList = []
+myUsers.myUsersList = pickle.load(pickle_in)
 pickle_in.close()
 
-TOKEN = 'NTM0NzgzOTYxNTkxOTcxODQw.DyE0Mw.eLFuXO6LRDdWCc0XtxzeueoWRIM'
+
+r = open("Token.txt","r")
+TOKEN = r.read()
+r.close()
 
 client = discord.Client()
 
