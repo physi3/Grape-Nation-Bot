@@ -40,6 +40,10 @@ r = open("Token.txt","r")
 TOKEN = r.read()
 r.close()
 
+r = open("Help Menu.txt","r")
+helpMenu = r.read()
+r.close()
+
 client = discord.Client()
 
 @client.event
@@ -61,7 +65,7 @@ async def on_message(message):
             msg = 'Hello {0.author.mention}'.format(message)
             await client.send_message(message.channel, msg)
             poll(message,1,1)
-        if splitContent[1:6] == ["what","do","they","say","about"]:
+        elif splitContent[1:6] == ["what","do","they","say","about"]:
             if message.mentions[0].mention == "<@!388774545328177153>":
                 msg = 'You know what they say. {0.mentions[0].mention} has a peen the length of 2 coke cans stacked on top of each other.'.format(message)
             elif message.mentions[0].mention =='<@!425783117165363200>':
@@ -70,13 +74,13 @@ async def on_message(message):
                 msg = 'You know what they say. {0.mentions[0].mention} has a small peen.'.format(message)
             await client.send_message(message.channel, msg)
             print(msg)
-        if splitContent[1:5] == ["how","laggy","am","i"]:
+        elif splitContent[1:5] == ["how","laggy","am","i"]:
             msg = "{0.author.mention} is almost as laggy as a 1920's PC in eastern Mongolia".format(message)
             await client.send_message(message.channel, msg)
-        if splitContent[1:4] == ["how","laggy","is"]:
+        elif splitContent[1:4] == ["how","laggy","is"]:
             msg = "{0.mentions[0].mention} is almost as laggy as a 1920's PC in eastern Mongolia".format(message)
             await client.send_message(message.channel, msg)
-        if splitContent[1] == 	"daily":
+        elif splitContent[1] == 	"daily":
             userToUse = myUsers.myUsersList[myUsers.findUser(message.author.mention)]
             userToUse.getDaily()
             if userToUse.collectedDaily:
@@ -86,16 +90,23 @@ async def on_message(message):
             msg = msg.format(message)
             await client.send_message(message.channel, msg)
             updateUsers()
-        if splitContent[1] == 	"balance":
+        elif splitContent[1] == 	"balance":
             userToUse = myUsers.myUsersList[myUsers.findUser(message.author.mention)]
             msg = "Okay, {0.author.mention} You have "+str(userToUse.grapes)+" grapes."
             msg = msg.format(message)
             await client.send_message(message.channel, msg)
-        if splitContent[1:5] == ["when","did","i","join"]:
+        elif splitContent[1:5] == ["when","did","i","join"]:
             date = str(message.author.joined_at).split(" ")[0].split("-")+str(message.author.joined_at).split(" ")[1].split(":")[:-1]
             msg = "Okay, {0.author.mention} you joined "+date[1]+" "+date[2]+" "+date[0]+" at "+date[3]+":"+date[4]
             msg = msg.format(message)
             await client.send_message(message.channel, msg)
+        elif splitContent[1] == "help":
+            print("help")
+            await client.send_message(message.channel, helpMenu)
+        else:
+            msg = "Sorry, {0.author.mention} I don't under stand. Do `gn! help` for all comands.".format(message)
+            await client.send_message(message.channel, msg)            
+            
 
 @client.event
 async def on_ready():
