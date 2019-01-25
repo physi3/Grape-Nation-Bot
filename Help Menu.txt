@@ -31,3 +31,7 @@ See your balance
 --DM
 DMs who you mention with the mesasge in brackets
 `gn! dm @mention (message goes in brackets)`
+
+--The Bee Movie
+Reads you a taster of the best movie in existance
+`gn! read out the best movie of all time`
