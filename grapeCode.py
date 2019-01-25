@@ -44,6 +44,10 @@ r = open("Help Menu.txt","r")
 helpMenu = r.read()
 r.close()
 
+r = open("test.json","r")
+test = r.read()
+r.close()
+
 client = discord.Client()
 
 @client.event
@@ -62,9 +66,10 @@ async def on_message(message):
         return
     if splitContent[0] == "gn!":
         if splitContent[1] == "hello":
-            msg = 'Hello {0.author.mention}'.format(message)
+            msg = test.title.content
+            #msg = 'Hello {0.author.mention}'.format(message)
             await client.send_message(message.channel, msg)
-            poll(message,1,1)
+            #poll(message,1,1)
         elif splitContent[1:6] == ["what","do","they","say","about"]:
             if message.mentions[0].mention == "<@!388774545328177153>":
                 msg = 'You know what they say. {0.mentions[0].mention} has a peen the length of 2 coke cans stacked on top of each other.'.format(message)
@@ -101,11 +106,18 @@ async def on_message(message):
             msg = msg.format(message)
             await client.send_message(message.channel, msg)
         elif splitContent[1] == "help":
-            print("help")
-            await client.send_message(message.channel, helpMenu)
+            await client.send_message(message.author, helpMenu)
+            msg = "Okay, {0.author.mention} I dm'd you the help menu. (Be Warned: It's pretty long).".format(message)
+            await client.send_message(message.channel, msg)
+        elif splitContent[1] == "dm":
+            msg2Dm = message.content.split("(")[1].split(")")[0]
+            await client.send_message(message.mentions[0], message.author.mention+" sent:")
+            await client.send_message(message.mentions[0], msg2Dm)
+            msg = "Okay, {0.author.mention} I dm'd {0.mentions[0].mention}.".format(message)
+            await client.send_message(message.channel, msg)
         else:
             msg = "Sorry, {0.author.mention} I don't under stand. Do `gn! help` for all comands.".format(message)
-            await client.send_message(message.channel, msg)            
+            await client.send_message(message.channel, msg)
             
 
 @client.event

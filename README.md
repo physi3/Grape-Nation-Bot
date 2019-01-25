@@ -64,3 +64,11 @@ See your balance
 ```
 gn! balance
 ```
+
+## Dm
+
+DMs who you mention with the mesasge in brackets
+
+```
+gn! dm @mention (message goes in brackets)
+```
