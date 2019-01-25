@@ -36,7 +36,7 @@ myUsers.myUsersList = pickle.load(pickle_in)
 pickle_in.close()
 
 
-r = open("Token.txt","r")
+r = open("Token.env","r")
 TOKEN = r.read()
 r.close()
 
