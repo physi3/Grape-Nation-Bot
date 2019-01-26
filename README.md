@@ -72,6 +72,9 @@ DMs who you mention with the mesasge in brackets
 ```
 gn! dm @mention (message goes in brackets)
 ```
+```
+gn! dm @everyone (message goes in brackets)
+```
 
 ## The Bee Movie
 
