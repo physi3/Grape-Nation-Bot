@@ -2,6 +2,34 @@ import datetime
 import discord
 import time
 import pickle
+import random
+
+rules = [['scissors', 'cuts', 'paper'], ['paper', 'covers', 'rock'], ['rock', 'crushes', 'lizard'], ['lizard', 'poisons', 'spock'], ['spock', 'smashes', 'scissors'], ['scissors', 'decapitates', 'lizard'], ['lizard', 'eats', 'paper'], ['paper', 'disproves', 'spock'], ['spock', 'vaporizes', 'rock'], ['rock', 'crushes', 'scissors']]
+choices = ["scissors","paper","rock","spock","lizard"]
+outcomes = ["Oh, sorry {0.author.mention}, you lost, because they chose: ","Great {0.author.mention}, you won, because they chose: "]
+
+def rpslsContest(playerInput,computerInput):
+    won = False
+    for i in range(len(rules)):
+        if rules[i][0] == playerInput:
+            if rules[i][2] == computerInput:
+                won = True
+                statement = i
+                return [won,rules[statement]]
+                break
+    if won != True:
+        for j in range(len(rules)):
+            if rules[j][0] == computerInput:
+                if rules[j][2] == playerInput:
+                    won = False
+                    statement = j
+                    return [won,rules[statement]]
+                    break
+
+#    playRpls = True
+#    computerInput = random.choice(choices)
+#    outcome = contest(input(">>> ").lower(),computerInput)
+#    print(outcomes[outcome[0]]+computerInput+", remember, "+outcome[1][0],outcome[1][1],outcome[1][2]+".\n")
 
 class myUser:
     def __init__(self, idGiven):
@@ -110,6 +138,25 @@ async def on_message(message):
             await client.send_message(message.author, helpMenu)
             msg = "Okay, {0.author.mention} I dm'd you the help menu. (Be Warned: It's pretty long).".format(message)
             await client.send_message(message.channel, msg)
+                    
+        elif splitContent[1:6] == ["rock","paper","scissors","lizard","spock"] or splitContent[1] == "rpsls" :
+            msg = "Okay, {0.author.mention} let's play.\nWhat do you pick:"
+            msg = msg.format(message)
+            await client.send_message(message.channel, msg)
+            reply = await client.wait_for_message(author = message.author)
+            computerInput = random.choice(choices)
+            try:
+                outcome = rpslsContest(reply.content.lower(),computerInput)
+                msg = outcomes[outcome[0]].format(message)+computerInput.capitalize()+".\nRemember, "+outcome[1][0].capitalize()+" "+outcome[1][1]+" "+outcome[1][2].capitalize()+"."
+            except:
+                if reply.content.lower() in choices:
+                    msg = "Woah {0.author.mention}, looks like you drew, you both picked"+reply.content.lower().capitalize()+".\nYou must now input the cammand again if you want to replay."
+                    msg = msg.format(message)                    
+                else:
+                    msg = "Sorry {0.author.mention}, thats not a valid input.\n*If you dont know the rules, do `gn! help`*\nYou must now input the cammand again if you want to replay."
+                    msg = msg.format(message)
+            await client.send_message(message.channel, msg)
+            
         elif splitContent[1] == "dm":		
             if message.mention_everyone:
                 for i in message.server.members:
@@ -128,7 +175,7 @@ async def on_message(message):
                 msg = "Okay, {0.author.mention} I dm'd {0.mentions[0].mention}.".format(message)
                 await client.send_message(message.channel, msg)
         else:
-            msg = "Sorry, {0.author.mention} I don't under stand. Do `gn! help` for all comands.".format(message)
+            msg = "Sorry, {0.author.mention} I don't understand. Do `gn! help` for all comands.".format(message)
             await client.send_message(message.channel, msg)
             
 

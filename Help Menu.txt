@@ -13,8 +13,8 @@ You can ask the bot either how laggy you are
 `gn! How laggy am I`
 Or how laggy someone else is
 `gn! How laggy is @mention`
--- What do they say?
 
+-- What do they say?
 You can ask the dicord bot what they say about a certain person
 `gn! What do they say about @mention`
 
@@ -36,3 +36,12 @@ DMs who you mention with the mesasge in brackets
 --The Bee Movie
 Reads you a taster of the best movie in existance
 `gn! read out the best movie of all time`
+
+--Rock Paper Scissors Lizard Spock
+Lets you play RPSLS against the bot
+`gn! rock paper scissors lizard spock`
+or
+`gn! rpsls`
+
+After that you need to input your choice
+`Spock`

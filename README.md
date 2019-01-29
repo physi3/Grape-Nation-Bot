@@ -83,3 +83,21 @@ Reads you a taster of the best movie in existance
 ```
 gn! read out the best movie of all time
 ```
+
+## Rock Paper Scissors Lizard Spock
+
+Lets you play RPSLS against the bot
+
+```
+gn! rock paper scissors lizard spock
+```
+or
+```
+gn! rpsls
+```
+
+After that you need to input your choice
+
+```
+Spock
+```
