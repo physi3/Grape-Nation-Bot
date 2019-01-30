@@ -3,10 +3,13 @@ import discord
 import time
 import pickle
 import random
+import glob
+import math
 
+grapes = glob.glob("Grapes\*.png")
 rules = [['scissors', 'cuts', 'paper'], ['paper', 'covers', 'rock'], ['rock', 'crushes', 'lizard'], ['lizard', 'poisons', 'spock'], ['spock', 'smashes', 'scissors'], ['scissors', 'decapitates', 'lizard'], ['lizard', 'eats', 'paper'], ['paper', 'disproves', 'spock'], ['spock', 'vaporizes', 'rock'], ['rock', 'crushes', 'scissors']]
 choices = ["scissors","paper","rock","spock","lizard"]
-outcomes = ["Oh, sorry {0.author.mention}, you lost, because they chose: ","Great {0.author.mention}, you won, because they chose: "]
+outcomes = ["Oh, sorry {0.author.mention}, you lost","Great {0.author.mention}, you won"]
 
 def rpslsContest(playerInput,computerInput):
     won = False
@@ -147,7 +150,7 @@ async def on_message(message):
             computerInput = random.choice(choices)
             try:
                 outcome = rpslsContest(reply.content.lower(),computerInput)
-                msg = outcomes[outcome[0]].format(message)+computerInput.capitalize()+".\nRemember, "+outcome[1][0].capitalize()+" "+outcome[1][1]+" "+outcome[1][2].capitalize()+"."
+                msg = outcomes[outcome[0]].format(message)+", because they chose: "+computerInput.capitalize()+".\nRemember, "+outcome[1][0].capitalize()+" "+outcome[1][1]+" "+outcome[1][2].capitalize()+"."
             except:
                 if reply.content.lower() in choices:
                     msg = "Woah {0.author.mention}, looks like you drew, you both picked"+reply.content.lower().capitalize()+".\nYou must now input the cammand again if you want to replay."
@@ -156,7 +159,25 @@ async def on_message(message):
                     msg = "Sorry {0.author.mention}, thats not a valid input.\n*If you dont know the rules, do `gn! help`*\nYou must now input the cammand again if you want to replay."
                     msg = msg.format(message)
             await client.send_message(message.channel, msg)
-            
+
+        elif splitContent[1] == "bet" and splitContent[3:5] == ["grapes","on"] and splitContent[6:8] == ["out","of"]:
+            msg = "Okay, "+message.author.mention+" lets go: {}"
+            i = 1
+            msg = msg.format(i)
+            counter = await client.send_message(message.channel, msg)
+            numList = list(range(1,int(splitContent[8])+1))
+            numList = random.sample(numList, len(numList))
+            for i in numList:
+                msg = "Okay, "+message.author.mention+" "+str(i)
+                counter = await client.edit_message(counter, msg)
+                time.sleep(0.4)
+            msg = outcomes[i == int(splitContent[5])]
+            msg = msg.format(message)
+            await client.send_message(message.channel, msg)
+
+            if i == int(splitContent[5]):
+                userToUse = myUsers.myUsersList[myUsers.findUser(message.author.mention)]                
+                userToUse.grapes += int(splitContent[2])*int(splitContent[8])
         elif splitContent[1] == "dm":		
             if message.mention_everyone:
                 for i in message.server.members:
