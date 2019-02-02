@@ -1,20 +1,43 @@
 import pickle
 import glob
 
+rarities = ["Common","Uncommon","Rare","Epic","Legendary","Mythic"]
+
 class Grape:
-    def __init__(self, nameGiven, imageGiven, idGiven):
-        self.id = idGiven
+    def __init__(self, nameGiven, imageGiven, descriptionGiven, ratingGiven):
+        self.description = descriptionGiven
         self.name = nameGiven
         self.image = imageGiven
+        self.rating = ratingGiven
 
-grapesRaw = glob.glob("Grapes\*.png")
+class Shop:
+    def __init__(self):
+        self.weekly
+
+grapesRaw = glob.glob("Grapes/*")
+
 
 grapes = []
 
-x = 0
-for i in grapesRaw:
-     grapes.append(Grape(i.split("\\")[1].split(".")[0],i,x))
-     x += 1
+
+pickle_in = open("grapes.pickle","rb")
+grapes = pickle.load(pickle_in)
+pickle_in.close()
+
+grapeNames=[]
 
 for i in grapes:
-    print(i.name,i.image,i.id)
+    grapeNames.append(i.name)
+
+
+for i in grapesRaw:
+    if (i.split("/")[1].split(".")[0]+" Grape" in grapeNames):
+        print(i.split("/")[1].split(".")[0]+" Grape Already Exists")
+    else:
+        desc = input("Enter Description and Rationg For "+i.split("/")[1].split(".")[0]+" Grape"+"\n>>> ")
+        rating = int(input(">>> "))
+        grapes.append(Grape(i.split("/")[1].split(".")[0]+" Grape",i,desc,rating))
+
+pickle_out = open("grapes.pickle","wb")
+pickle.dump(grapes, pickle_out)
+pickle_out.close()
