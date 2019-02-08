@@ -1,5 +1,6 @@
 import pickle
 import glob
+import datetime
 
 rarities = ["Common","Uncommon","Rare","Epic","Legendary","Mythic"]
 
@@ -34,7 +35,7 @@ for i in grapesRaw:
     if (i.split("/")[1].split(".")[0]+" Grape" in grapeNames):
         print(i.split("/")[1].split(".")[0]+" Grape Already Exists")
     else:
-        desc = input("Enter Description and Rationg For "+i.split("/")[1].split(".")[0]+" Grape"+"\n>>> ")
+        desc = input("Enter Description and Rating For "+i.split("/")[1].split(".")[0]+" Grape"+"\n>>> ")
         rating = int(input(">>> "))
         grapes.append(Grape(i.split("/")[1].split(".")[0]+" Grape",i,desc,rating))
 
