@@ -4,10 +4,13 @@ import time
 import pickle
 import random
 import math
+import glob
 
 rules = [['scissors', 'cuts', 'paper'], ['paper', 'covers', 'rock'], ['rock', 'crushes', 'lizard'], ['lizard', 'poisons', 'spock'], ['spock', 'smashes', 'scissors'], ['scissors', 'decapitates', 'lizard'], ['lizard', 'eats', 'paper'], ['paper', 'disproves', 'spock'], ['spock', 'vaporizes', 'rock'], ['rock', 'crushes', 'scissors']]
 choices = ["scissors","paper","rock","spock","lizard"]
 outcomes = ["Oh, sorry {0.author.mention}, you lost","Great {0.author.mention}, you won"]
+prawnsRaw = glob.glob("Prawn/*")
+
 
 def rpslsContest(playerInput,computerInput):
     won = False
@@ -117,6 +120,14 @@ async def on_message(message):
         elif splitContent[1:6] == ["read","out","the","best","movie"]:
             msg = ("Okay, {0.author.mention} here's a taster:\n"+BMovieScript+"\n\nIf you want more go to: http://www.script-o-rama.com/movie_scripts/a1/bee-movie-script-transcript-seinfeld.html").format(message)
             await client.send_message(message.channel, msg)
+        elif splitContent[1] == "prawn":
+            prawnImage = random.choice(prawnsRaw)
+            #embed = discord.Embed(description="Here have some Prawn.")
+            #embed.set_image(url=prawnImage)
+            msg = "Okay, {0.author.mention}, here's some Prawn."
+            msg = msg.format(message)
+            await client.send_message(message.channel, msg)
+            await client.send_file(message.channel, prawnImage)
         elif splitContent[1] == "daily":
             userToUse = myUsers.myUsersList[myUsers.findUser(message.author.mention)]
             userToUse.getDaily()
