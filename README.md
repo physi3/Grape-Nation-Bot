@@ -65,6 +65,14 @@ See your balance
 gn! balance
 ```
 
+### Bet
+
+Gamble your grapes on a random roulette style betting system. You will at first lose the amount you bet and on the occasion that you win, you will then recieve the amount of grapes you wagered divided by the chances of you wining. If the roulette lands on the number you guessed, you win. Otherwise, you lose.
+
+```
+gn! bet 40 grapes on 2 out of 3
+```
+
 ## Dm
 
 DMs who you mention with the mesasge in brackets
@@ -100,4 +108,12 @@ After that you need to input your choice
 
 ```
 Spock
+```
+
+## Prawn
+
+Displays a random Prawn image.
+
+```
+gn! Prawn
 ```
