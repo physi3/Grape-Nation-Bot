@@ -1,4 +1,4 @@
-# Grape nation Bot
+# Grape Nation Bot
 
 This is the repository for my Grape Nation discord bot.
 Add it to a server [here](https://discordapp.com/api/oauth2/authorize?client_id=534783961591971840&permissions=8&scope=bot).
@@ -71,6 +71,22 @@ Gamble your grapes on a random roulette style betting system. You will at first 
 
 ```
 gn! bet 40 grapes on 2 out of 3
+```
+
+### Shop
+
+See your grape of the day of which you can buy or chose not to.
+
+```
+gn! shop
+```
+
+### Inventory
+
+See your grape inventory.
+
+```
+gn! inventory
 ```
 
 ## Dm
