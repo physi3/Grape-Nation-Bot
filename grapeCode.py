@@ -6,6 +6,39 @@ import random
 import math
 import glob
 
+grapeRarities = ["Null","Common","Uncommon","Rare","Super Rare","Legendary","Godly"]
+
+class Grape:
+    def __init__(self, nameGiven, imageGiven, descriptionGiven, ratingGiven):
+        self.description = descriptionGiven
+        self.name = nameGiven
+        self.image = imageGiven
+        self.rating = ratingGiven
+    def addImage(self, imageUrl):
+        self.image = imageUrl
+    def embed(self, message):
+        embed = discord.Embed()
+
+        embed.title=self.name
+        embed.colour=discord.Colour(0x680eb8)
+        embed.description=self.description
+        
+        embed.set_image(url=self.image)
+        embed.set_author(name="Grape Shop", icon_url="{0.server.icon_url}".format(message))
+        embed.set_footer(text="{0.author.name}'s daily grape".format(message), icon_url="{0.author.avatar_url}".format(message))
+
+        embed.add_field(name="Price", value=str(self.price())+" Grapes", inline=True)
+        embed.add_field(name="Rarity", value=grapeRarities[self.rating], inline=True)
+
+        return embed
+    
+    def price(self):
+        return self.rating*400
+        
+pickle_in = open("grapes.pickle","rb")
+grapeShopGrapes = pickle.load(pickle_in)
+pickle_in.close()
+
 rules = [['scissors', 'cuts', 'paper'], ['paper', 'covers', 'rock'], ['rock', 'crushes', 'lizard'], ['lizard', 'poisons', 'spock'], ['spock', 'smashes', 'scissors'], ['scissors', 'decapitates', 'lizard'], ['lizard', 'eats', 'paper'], ['paper', 'disproves', 'spock'], ['spock', 'vaporizes', 'rock'], ['rock', 'crushes', 'scissors']]
 choices = ["scissors","paper","rock","spock","lizard"]
 outcomes = ["Oh, sorry {0.author.mention}, you lost","Great {0.author.mention}, you won"]
@@ -41,6 +74,14 @@ class myUser:
         self.grapes = 0
         self.lastDailyTime = datetime.datetime(2018,1,1,1,1,1,1)
         self.collectedDaily = False
+    def addGrape(self, grape):
+        while True:
+            try:
+                print(self.inventory)
+                break
+            except:
+                self.inventory = []
+        self.inventory.append(grape)
     def getDaily(self):
         self.currentTime = datetime.datetime.now()
         if datetime.datetime.now() - self.lastDailyTime >= datetime.timedelta(1,0,0):
@@ -49,6 +90,26 @@ class myUser:
             self.lastDailyTime = self.currentTime
         else:
             self.collectedDaily = False
+    def getDailyGrape(self, grapeShop):
+        while True:
+            try:
+                lastShopTimeSet = True
+                break
+            except:
+                self.lastShopTime = datetime.datetime(2018,1,1,1,1,1,1)
+                lastShopTimeSet = False
+            
+            
+        if lastShopTimeSet:
+
+            if datetime.datetime.now() - self.lastShopTime >= datetime.timedelta(1,0,0):
+                self.currentGrape = random.choice(grapeShop)
+            else:
+                print("")
+        self.lastShopTime = datetime.datetime.now()
+        return self.currentGrape
+
+        
     def canBuy(self,neededGrapes):
         return self.grapes > neededGrapes 
 
@@ -138,6 +199,29 @@ async def on_message(message):
             msg = msg.format(message)
             await client.send_message(message.channel, msg)
             updateUsers()
+        elif splitContent[1] == "shop":
+            user = myUsers.myUsersList[myUsers.findUser(message.author.mention)]
+            grape = user.getDailyGrape(grapeShopGrapes)
+            await client.send_message(message.channel, embed=(grape.embed(message)))
+            msg = "Okay, {0.author.mention} would you like to purchase this grape for the listed price? (Y/N)"
+            msg = msg.format(message)
+            await client.send_message(message.channel, msg)
+            reply = await client.wait_for_message(author = message.author)
+            if reply.content.lower() == "y" or reply.content.lower() == "yes":
+                if user.grapes >= grape.price():
+                    user.grapes = user.grapes - grape.price()
+                    user.addGrape(grape)
+                    msg = "Okay {0.author.mention}, it's now in your inventory."
+                    msg = msg.format(message)
+                    await client.send_message(message.channel, msg)                   
+                else:
+                    msg = "Sorry {0.author.mention}, you dont have enough grapes."
+                    msg = msg.format(message)
+                    await client.send_message(message.channel, msg)
+            elif reply.content.lower() == "n" or reply.content.lower() == "no":
+                await client.send_message(message.channel, "Okay.")
+            else:
+                await client.send_message(message.channel, "I guess you don't want it then.")
         elif splitContent[1] == "balance":
             userToUse = myUsers.myUsersList[myUsers.findUser(message.author.mention)]
             msg = "Okay, {0.author.mention} You have "+str(userToUse.grapes)+" grapes."

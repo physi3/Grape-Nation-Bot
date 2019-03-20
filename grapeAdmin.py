@@ -10,10 +10,9 @@ class Grape:
         self.name = nameGiven
         self.image = imageGiven
         self.rating = ratingGiven
+    def addImage(self, imageUrl):
+        self.image = imageUrl
 
-class Shop:
-    def __init__(self):
-        self.weekly
 
 grapesRaw = glob.glob("Grapes/*")
 
@@ -38,6 +37,7 @@ for i in grapesRaw:
         desc = input("Enter Description and Rating For "+i.split("/")[1].split(".")[0]+" Grape"+"\n>>> ")
         rating = int(input(">>> "))
         grapes.append(Grape(i.split("/")[1].split(".")[0]+" Grape",i,desc,rating))
+
 
 pickle_out = open("grapes.pickle","wb")
 pickle.dump(grapes, pickle_out)
