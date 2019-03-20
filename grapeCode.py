@@ -199,6 +199,16 @@ async def on_message(message):
             msg = msg.format(message)
             await client.send_message(message.channel, msg)
             updateUsers()
+        elif splitContent[1] == "inventory":
+            user = myUsers.myUsersList[myUsers.findUser(message.author.mention)]
+            embed = embed = discord.Embed(title=message.author.name+"'s Inventory")
+            embed.set_thumbnail(url=message.author.avatar_url)
+            try:
+                for i in user.inventory:
+                    embed.add_field(name=i.name,value=i.description +" | "+grapeRarities[i.rating])
+                await client.send_message(message.channel, embed=embed)
+            except:
+                await client.send_message(message.channel, "You don't have any grapes yet. Do `gn! shop` to see your daily grape.")
         elif splitContent[1] == "shop":
             user = myUsers.myUsersList[myUsers.findUser(message.author.mention)]
             grape = user.getDailyGrape(grapeShopGrapes)
