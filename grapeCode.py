@@ -85,7 +85,7 @@ class myUser:
     def getDaily(self):
         self.currentTime = datetime.datetime.now()
         if datetime.datetime.now() - self.lastDailyTime >= datetime.timedelta(1,0,0):
-            self.grapes += 500
+            self.grapes += 250
             self.collectedDaily = True
             self.lastDailyTime = self.currentTime
         else:
